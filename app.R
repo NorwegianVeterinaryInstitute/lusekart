@@ -30,7 +30,7 @@ library('rgdal')
 library('rgeos')
 library('sp')
 library('shiny')
-library('rsconnect')
+#library('rsconnect')
 
 
 # Funksjoner --------------------------------------------------------------
@@ -100,9 +100,32 @@ dataliste <- function(kartvalg){
   return(lokreg_redus)
 }
 
-
 lesekart <- function(mappe){
-  dir(mappe)
+  filnavn <- dir(mappe)
+  filnavn_uten_tiff <- substring(filnavn, 1, nchar(filnavn)-4)
+  filer <- paste0(substring(filnavn_uten_tiff, 1,5), substring(filnavn_uten_tiff, 7,nchar(filnavn_uten_tiff)))
+  pressListe <- lapply(filnavn, function(x) raster(paste0(mappe,x)))
+  Mode <- function(x) {
+    ux <- unique(x)
+    ux[which.max(tabulate(match(x, ux)))]
+  }
+  unifyExtent <- function(x) {# x = pressliste
+    extents <- lapply(x, extent)
+    mode1   <- Mode(sapply(extents, function(x) x[1]))
+    mode2   <- Mode(sapply(extents, function(x) x[2]))
+    mode3   <- Mode(sapply(extents, function(x) x[3]))
+    mode4   <- Mode(sapply(extents, function(x) x[4]))
+    avvik   <- which(sapply(extents, function(x) x[1]) != mode1 | sapply(extents, function(x) x[2]) != mode2 |sapply(extents, function(x) x[3]) != mode3 |sapply(extents, function(x) x[3]) != mode3)
+    avvik
+    sekvens   <- c(1:length(x))
+    utenAvvik <- sekvens[-avvik][1]
+    if(length(avvik)>0) for(i in 1:length(avvik)) extent(x[[avvik[i]]]) <- extent(x[[utenAvvik]])
+    return(x)
+  }
+  pressListe <- unifyExtent(pressListe)
+  #names(pressListe) <- filer
+  pressStack <- stack(pressListe)
+  return(pressStack)
 }
 
 # Laster data -------------------------------------------------------------
@@ -116,67 +139,22 @@ aktive0[,ncol(aktive0)] <- aktive0[,ncol(aktive0)-1]
 aktive         <- cbind(aktive0, XNextWeek1 = aktive0[,ncol(aktive0)-1], XNextWeek2 = aktive0[,ncol(aktive0)-1], XNextWeek3 = aktive0[,ncol(aktive0)-1])
 #ncol(aktive)
 #aktiv_now      <- row.names(aktive)[!is.na(aktive[,ncol(aktive)-3])]
+week_now <- tail(names(aktive_alle),1)
 #aktiv.lok      <-  lok[lok$LOK_NR %in% aktiv_now,]
 
 #lokreg_redus <- read.table('./lokreg_redus.csv', sep = ';', dec =",")
 
-press201621 <- raster('./rasters/pressX201621.tif')
-press201622 <- raster('./rasters/pressX201622.tif')
-press201623 <- raster('./rasters/pressX201623.tif')
-press201624 <- raster('./rasters/pressX201624.tif')
-press201625 <- raster('./rasters/pressX201625.tif')
-press201626 <- raster('./rasters/pressX201626.tif')
-press201627 <- raster('./rasters/pressX201627.tif')
-press201628 <- raster('./rasters/pressX201628.tif')
-press201629 <- raster('./rasters/pressX201629.tif')
-press201630 <- raster('./rasters/pressX201630.tif')
-press201631 <- raster('./rasters/pressX201631.tif')
-press201632 <- raster('./rasters/pressX201632.tif')
-press201633 <- raster('./rasters/pressX201633.tif')
-press201634 <- raster('./rasters/pressX201634.tif')
-press201635 <- raster('./rasters/pressX201635.tif')
-press201636 <- raster('./rasters/pressX201636.tif')
-press201637 <- raster('./rasters/pressX201637.tif')
-press201638 <- raster('./rasters/pressX201638.tif')
-press201639 <- raster('./rasters/pressX201639.tif')
-press201640 <- raster('./rasters/pressX201640.tif')
-press201641 <- raster('./rasters/pressX201641.tif')
-press201642 <- raster('./rasters/pressX201642.tif')
-press201643 <- raster('./rasters/pressX201643.tif')
-press201644 <- raster('./rasters/pressX201644.tif')
-press201645 <- raster('./rasters/pressX201645.tif')
-press201646 <- raster('./rasters/pressX201646.tif')
-press201647 <- raster('./rasters/pressX201647.tif')
-press201648 <- raster('./rasters/pressX201648.tif')
-press201649 <- raster('./rasters/pressX201649.tif')
-press201650 <- raster('./rasters/pressX201650.tif')
-press201651 <- raster('./rasters/pressX201651.tif')
-press201652 <- raster('./rasters/pressX201652.tif')
-press201701 <- raster('./rasters/pressX201701.tif')
-press201702 <- raster('./rasters/pressX201702.tif')
-press201703 <- raster('./rasters/pressX201703.tif')
-press201704 <- raster('./rasters/pressX201704.tif')
-press201705 <- raster('./rasters/pressX201705.tif')
-press201706 <- raster('./rasters/pressX201706.tif')
-press201707 <- raster('./rasters/pressX201707.tif')
-press201708 <- raster('./rasters/pressX201708.tif')
-press201709 <- raster('./rasters/pressX201709.tif')
-press201710 <- raster('./rasters/pressX201710.tif')
-pressNextWeek1 <- raster('./rasters/pressXNextWeek1.tif')
-pressNextWeek2 <- raster('./rasters/pressXNextWeek2.tif')
-#pressNeste3 <- raster('./rasters/pressNeste3.tif')
-
-extent(press201705) <- extent(press201704)
-
-pressene <- stack(press201621, press201622, press201623, press201624, press201625, press201626, press201627, press201628, press201629, press201630, press201631, press201632, press201633, press201634, press201635, press201636, press201637, press201638, press201639, press201640, press201641, press201642, press201643,press201644, press201645,press201646,press201647,press201648,press201649,press201650,press201651,press201652,press201701, press201702, press201703, press201704, press201705, press201706,press201707,press201708,press201709,press201710,
-                  pressNextWeek1, pressNextWeek2)
+mappe <- './rasters/'
+pressene <- lesekart(mappe)
 
 #names(pressene)[9] <- 'pressXNextWeek1'
 #names(pressene)[10] <- 'pressXNextWeek2'
 names(pressene)
-fargegrunnlag <- raster('./fargegrunnlag100.tif')
-
-
+#fargegrunnlag <- raster('./fargegrunnlag100.tif')
+r1 <- raster(nrows=10, ncols=20)
+r1 <- setValues(r1, c(0:199)/10)
+fargegrunnlag <- r1
+range(r1)
 
 
 ## Leser inn lusedata
@@ -192,113 +170,45 @@ Totalt <- read.table('./MobileTotaltFra2012.txt', header=T, sep = '\t', dec = ',
 ## Henter ut siste smittepress og lusetall:
 
 
-
-
-#pal <- colorQuantile(c("#ffffff","#ffffcc","#ffeda0","#fed976","#feb24c","#fd8d3c","#fc4e2a","#e31a1c", "#bd0026", "#800026"), probs = seq(0,1,0.1), values(fargegrunnlag), na.color = "transparent")
-pal <- colorQuantile(c("#ffffff","#ffffff","#ffffcc","#ffffcc","#fed976","#fed976","#feb24c","#e31a1c", "#bd0026", "#800026"), probs = seq(0,1,0.1), values(fargegrunnlag), na.color = "transparent")
-
+pal <- colorBin(c("#ffffff","#ffffff","#ffffcc","#ffffcc","#fed976","#fed976","#feb24c","#e31a1c", "#bd0026", "#800026"), values(fargegrunnlag), na.color = "transparent", bins=10)
 
 ui <- fluidPage(
-  navbarPage("Veterinærinstituttets smittepress -Betaversjon", id="nav",
-             
-             tabPanel("Interaktivt kart",
-                      div(class="outer",
-                          tags$head(
-                            # Include Shiny's our custom CSS
-                            includeCSS("./styles.css"),
-                            includeScript("./gomap.js")
-                          ),
-                          leafletOutput("mymap", width = "100%", height="100%"),
-                          absolutePanel(id = "controls", 
-                                        class = "panel panel-default", 
-                                        fixed = TRUE,
-                                        draggable = TRUE, 
-                                        top = 135, 
-                                        left = 20, 
-                                        right = "auto", 
-                                        bottom = "auto",
-                                        width = 330, 
-                                        height = "auto", 
-                                        h2("Tilpass visning"),
-                                        
-                                        textInput("lok", "Velg lokalitet", 
-                                                  #value = aktiv.lok$LOK_NR[order(aktiv.lok$LOK_NR)[1]]
-                                                  value = "10173"),
-                                        verbatimTextOutput("value"),
-                                        sliderInput("km_om",
-                                                    "Kilometer radius:",
-                                                    min = 1,
-                                                    max = 100,
-                                                    value = 20),
-                                        checkboxGroupInput("visvar", "Vis",
-                                                           c("Vis smittekart over hele Norge" = "smi",
-                                                             "Vis bare smittekart" = "lokmark",
-                                                             "Vis alle aktive lokaliteter i Norge" = "begr")),
-                                        selectInput('kartvalg', "Velg uke:",
-                                                    c('Uke 201710' = 'pressX201710', 
-                                                      'Uke 201621' = 'pressX201621',
-                                                      'Uke 201622' = 'pressX201622',
-                                                      'Uke 201623' = 'pressX201623', 
-                                                      'Uke 201624' = 'pressX201624',
-                                                      'Uke 201625' = 'pressX201625',
-                                                      'Uke 201626' = 'pressX201626',
-                                                      'Uke 201627' = 'pressX201627',
-                                                      'Uke 201628' = 'pressX201628',
-                                                      'Uke 201629' = 'pressX201629',
-                                                      'Uke 201630' = 'pressX201630',
-                                                      'Uke 201631' = 'pressX201631',
-                                                      'Uke 201632' = 'pressX201632',
-                                                      'Uke 201633' = 'pressX201633',
-                                                      'Uke 201634' = 'pressX201634',
-                                                      'Uke 201635' = 'pressX201635',
-                                                      'Uke 201636' = 'pressX201636',
-                                                      'Uke 201637' = 'pressX201637',
-                                                      'Uke 201638' = 'pressX201638',
-                                                      'Uke 201639' = 'pressX201639',
-                                                      'Uke 201640' = 'pressX201640',
-                                                      'Uke 201641' = 'pressX201641',
-                                                      'Uke 201642' = 'pressX201642',
-                                                      'Uke 201643' = 'pressX201643', 
-                                                      'Uke 201644' = 'pressX201644', 
-                                                      'Uke 201645' = 'pressX201645', 
-                                                      'Uke 201646' = 'pressX201646', 
-                                                      'Uke 201647' = 'pressX201647', 
-                                                      'Uke 201648' = 'pressX201648', 
-                                                      'Uke 201649' = 'pressX201649', 
-                                                      'Uke 201650' = 'pressX201650', 
-                                                      'Uke 201651' = 'pressX201651', 
-                                                      'Uke 201652' = 'pressX201652', 
-                                                      'Uke 201701' = 'pressX201701',
-                                                      'Uke 201702' = 'pressX201702',
-                                                      'Uke 201703' = 'pressX201703',
-                                                      'Uke 201704' = 'pressX201704',
-                                                      'Uke 201705' = 'pressX201705',
-                                                      'Uke 201706' = 'pressX201706',
-                                                      'Uke 201707' = 'pressX201707',
-                                                      'Uke 201708' = 'pressX201708',
-                                                      'Uke 201709' = 'pressX201709', 
-                                                      'En uke fram i tid' = 'pressXNextWeek1',
-                                                      'To uker fram i tid' = 'pressXNextWeek2'
-                                                      ))
-                          ) 
-                      )
-             ),
-             
-             tabPanel("Lokalitetsliste",
-                      radioButtons("listevalg", "Velg liste:",
-                                   c("Valgte lokaliteter" = "valgt",
-                                     "Alle aktive lokaliteter" = "hele"
-                                     )),
-                      tableOutput("mytable")
-             ),
-             tabPanel("Dokumentasjon",
-                       includeMarkdown("Dokumentasjon.Rmd")
-                      
-             ),
-             tabPanel("Kildekode",
-                      includeMarkdown("script.Rmd")
-             )
-              
+  #tags$head(tags$link(rel = "stylesheet", type = "text/css", href = "bootstrap.css")),
+  
+  tags$head(tags$script(src="script.js")),
+  tags$head(
+    tags$link(rel = "stylesheet", href = "typekit.css")),
+  tags$head(tags$link(rel="stylesheet", 
+                      type="text/css",
+                      href="style.css")),  
+  #headerPanel("Hello Shiny!"),
+  htmlTemplate("./header.html",
+               doc = includeMarkdown("Dokumentasjon.Rmd")
+  ),
+  # navbarPage("Veterinærinstituttets smittepress -Betaversjon", id="nav",
+  #            tabPanel("Interaktivt kart",
+  div(class="outer",
+      tags$head(
+        # Include Shiny's our custom CSS
+        includeCSS("./styles.css"),
+        includeScript("./gomap.js")
+      ),
+      leafletOutput("mymap", width = "100%", height="100%"),
+      absolutePanel(id = "controls",
+                    class = "panel panel-default",
+                    fixed = TRUE,
+                    draggable = TRUE,
+                    #top = 135,
+                    top = 175,
+                    left = 10,
+                    right = "auto",
+                    bottom = "auto",
+                    width = 330,
+                    height = "auto",
+                    
+                    htmlTemplate("./formkart.html")
+                    
+      )
   )
 )
 
@@ -307,44 +217,67 @@ ui <- fluidPage(
 
 
 server <- function(input, output, session) {
+  
+  mylok <- reactive({
+    
+    l <- input$lok
+    if (input$sokeradio == "goto") {
+      l <- input$lokS
+    }
+    return(l)
+  })
+  
+  mykartvalg <- reactive({
+    k <- paste0("press", week_now)
+    if (input$velgradio == "1uke") {
+      k <- "pressXNextWeek1"
+    }
+    if (input$velgradio == "2uker") {
+      k <- "pressXNextWeek2"
+    }
+    if (input$velgradio == "hist") {
+      week <- input$week
+      year <- input$year
+      k <- "0"
+      if (!(input$week == "0")) {
+        if(as.numeric(week) > 9)
+          k <- paste("pressX", year, week, sep="")
+        else {
+          k <- paste("pressX", year, "0", week, sep="")
+        }
+      }
+    }
+    return(k)
+  })
+  
+  
   output$mymap <- renderLeaflet({
-    {if(!("lokmark" %in% input$visvar)) {
+		lineWeight <- 0
+	  if (input$sokeradio == "find") {
+	  	lineWeight <- 6
+	  }
+
       
-      
-      leaflet({if(!("begr" %in% input$visvar)) data = velgelok(input$km_om, input$lok, input$kartvalg)[[1]] else data = velgAktiv(input$kartvalg)[[1]]}) %>% 
+      leaflet({if(!("begr" %in% input$visvar)) data = velgelok(input$km_om, mylok(), mykartvalg())[[1]] else data = velgAktiv(mykartvalg())[[1]]}) %>% 
         addTiles()%>% 
         addMarkers(popup = ~as.character(LOK_NR)) %>%
-        addMarkers(data = lok[lok$LOK_NR == input$lok,],popup = ~as.character(LOK_NR), icon = redLeafIcon) %>%
-        addRasterImage({if(!("smi" %in% input$visvar)) crop(velgRaster(input$kartvalg), 
-                                                            velgelok(input$km_om, 
-                                                                     input$lok, input$kartvalg)[[3]]) else velgRaster(input$kartvalg)}, 
+        addMarkers(data = lok[lok$LOK_NR == mylok(),],popup = ~as.character(LOK_NR), icon = redLeafIcon) %>%
+        addRasterImage({if(!(input$sokeradio == "smi")) crop(velgRaster(mykartvalg()), 
+                                                             velgelok(input$km_om, 
+                                                                      mylok(), mykartvalg())[[3]]) else velgRaster(mykartvalg())}, 
                        maxBytes=Inf, 
                        colors = pal, 
                        opacity = 0.65)  %>% 
         addLegend(pal = pal, values = values(fargegrunnlag), title = "Smittepress") %>% 
-        addPolygons(data=velgelok(input$km_om, input$lok, input$kartvalg)[[2]], weight = , fillColor = "transparent") 
-    }
-      else
-        leaflet({if(!("begr" %in% input$visvar)) data = velgelok(input$km_om, input$lok, input$kartvalg)[[1]] else data = velgAktiv(input$kartvalg)[[1]]}) %>% 
-        addTiles()%>% 
-        addRasterImage({if(!("smi" %in% input$visvar)) crop(velgRaster(input$kartvalg), 
-                                                            velgelok(input$km_om, 
-                                                                     input$lok, input$kartvalg)[[3]]) else velgRaster(input$kartvalg)}, 
-                       maxBytes=Inf, 
-                       colors = pal, 
-                       opacity = 0.35)  %>% 
-        addLegend(pal = pal, values = values(fargegrunnlag), title = "Smittepress") %>% 
-        addPolygons(data=velgelok(input$km_om, input$lok, input$kartvalg)[[2]], weight = 3, fillColor = "transparent") 
-    }
+        addPolygons(data=velgelok(input$km_om, mylok(), mykartvalg())[[2]], weight = lineWeight, fillColor = "transparent") 
   })
   
-    output$mytable <- renderTable({if(input$listevalg == "valgt") 
-    velgTilListe(dataliste(input$kartvalg),velgelok(input$km_om, input$lok, input$kartvalg)[[1]])
+  output$mytable <- renderTable({if(input$listevalg == "valgt") 
+    velgTilListe(dataliste(mykartvalg()),velgelok(input$km_om, mylok(), mykartvalg())[[1]])
     else
-      dataliste(input$kartvalg)[order(dataliste(input$kartvalg)$LOKALITETSNUMMER),]
+      dataliste(mykartvalg())[order(dataliste(mykartvalg())$LOKALITETSNUMMER),]
     
   })
-
   
 }
 

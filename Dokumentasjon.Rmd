@@ -1,0 +1,16 @@
+---
+title: "Dokumentasjon"
+author: "Lars Qviller"
+date: "19 januar 2017"
+output: html_document
+---
+
+
+## Kart over ukentlig smittepress 
+
+
+Veterinærinstituttet har utviklet en modell som viser forventet fremvekst av mobile stadier av lakselus, avhengig av temperatur. Modellen baserer seg på ukentlige rapporteringer på lokalitetsnivå av antall reproduserende hunnlus og temperatur.
+Sammen med kunnskap om lakselusas biologi, brukes lokalitetsinformasjon til å beregne reproduksjon, utviklingstider og overlevelse frem til mobile stadier av lus på fisk. Smittepresset beregnes per anlegg og representerer lokalt smittepress som fortynnes med økende avstand fra kildeanlegget. For et gitt sted på kysten kan vi dermed beregne det totale smittepresset ved å legge sammen avstandsjusterte smittepress fra alle anlegg med lus i nabolaget. 
+Smittepresskartene representerer dermed et kystdekkende varsel for forventet relativ fremvekst av nye mobile lus, der overlevelse og tiden til fremveksten er temperaturavhengig. Eksempelvis vil tiden det tar fra luseegg klekkes til neste generasjon mobile lus sitter på fisk, være omtrent 8,5 uker ved 5 °C, 4,5 uker ved 10 °C og 3 uker ved 15 °C 
+Fargeskalaen som benyttes i kartet varier fra gul (lavt smittepress) til rødt (høyt smittepress). Skalaen viser smittepress i forhold til historiske lusedata (2012–2015), hvor gjennomsnittet for landet over tid ligger på ca. 11,5. Smittepresset er generelt lavt om vinteren og høyere om sommeren og høsten. Et smittepress på 14,7 og 15,5 definerer grensen for de henholdsvis 10 % og 5 % høyeste historiske verdiene. Høyere smittepress går mot mørkere rødt i kartet. Smittepresset kan brukes sammen med annen informasjon for å beregne merdvis luseutvikling i applikasjonen 
+et er generelt lavt om vinteren og høyere om sommeren og høsten. Et smittepress på 14,7 og 15,5 definerer grensen for de henholdsvis 10 % og 5 % høyeste historiske verdiene. Høyere smittepress går mot mørkere rødt i kartet. [Lusekart](/lusekart).

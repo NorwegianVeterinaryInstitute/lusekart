@@ -1,0 +1,9 @@
+.modal {
+  display: none; 
+}
+
+.modal-dialog {
+  font-family: "futura-pt";
+  font-size: 1.75rem;
+  line-height: 1.6;
+}
