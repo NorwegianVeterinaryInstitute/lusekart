@@ -1,0 +1,128 @@
+
+  <h2 class="title-font">Søkealternativer:</h2>
+  <div id="sokeradio" class="form-group shiny-input-radiogroup shiny-input-container">
+  	<div class="shiny-options-group">
+  	  <div class="radio">
+  	    <label>
+  	      <input type="radio" name="sokeradio" value="find" checked="checked"/>
+  	      <span class="label-font">Finn lokalitet (5-sifret anleggsnummer)</span>
+  	    </label>
+  	  </div>
+  	  <div id="findblock" class="row">
+  	  	<div class="col-sm-6">
+  	    	<input id="lok" type="text" class="form-control label-font" value="10173"/>
+  	  	</div>
+  	  </div>
+  	  <div class="radio">
+  	    <label>
+  	      <input type="radio" name="sokeradio" value="goto"/>
+  	      <span class="label-font">Gå til region</span>
+  	    </label>
+  	  </div>
+  	  <div id="gotoblock" class="row">
+  	  	<div class="col-sm-12">
+            <div class="form-group shiny-input-container">
+              <div>
+                <select class="form-control label-font" id="lokS">
+                    <option value="14016" selected>Produksjonsområde 1: Svenskegrensen til Jæren</option>
+                    <option value="33797">Produksjonsområde 2: Ryfylke</option>
+                    <option value="13035">Produksjonsområde 3: Karmøy til Sotra</option>
+                    <option value="23436">Produksjonsområde 4: Nordhordaland til Stadt</option>
+                    <option value="10181">Produksjonsområde 5: Stadt til Hustadvika</option>
+                    <option value="29056">Produksjonsområde 6: Nordmøre til Sør-Trøndelag</option>
+                    <option value="30997">Produksjonsområde 7: Nord-Trøndelag med Bindal</option>
+                    <option value="21337">Produksjonsområde 8: Helgeland til Bodø</option>
+                    <option value="13592">Produksjonsområde 9: Vestfjorden og Vesterålen</option>
+                    <option value="15860">Produksjonsområde 10: Andøya til Senja</option>
+                    <option value="10747">Produksjonsområde 11: Kvaløya til Loppa</option>
+                    <option value="10616">Produksjonsområde 12: Vest-Finnmark</option>
+                    <option value="33777">Produksjonsområde 13: Øst-Finnmark</option>
+  			   </select>
+                <script type="application/json" data-for="variable" data-nonempty="">{}</script>
+              </div>
+            </div>
+  	  	</div>
+  	  </div>
+  	  <div class="radio">
+  	    <label>
+  	      <input type="radio" name="sokeradio" value="smi"/>
+  	      <span class="label-font">Hele Norge</span>
+  	    </label>
+  	  </div>  	  
+  	</div>
+  </div>
+  
+  
+  <div id="velgradio" class="form-group shiny-input-radiogroup shiny-input-container">
+  	<label class="control-label label-font" for="velgradio">Velg perioden du vil se smittepress for:</label>
+  	<div class="shiny-options-group">
+  	  <div class="radio">
+  	    <label>
+  	      <input type="radio" name="velgradio" value="now" checked="checked"/>
+  	      <span class="label-font">Gjeldende uke</span>
+  	    </label>
+  	  </div>
+  	  <div class="radio">
+  	    <label>
+  	      <input type="radio" name="velgradio" value="1uke"/>
+  	      <span class="label-font">1 uke frem i tid</span>
+  	    </label>
+  	  </div>
+  	  <div class="radio">
+  	    <label>
+  	      <input type="radio" name="velgradio" value="2uker"/>
+  	      <span class="label-font">2 uker frem i tid</span>
+  	    </label>
+  	  </div>
+  	  <div class="radio">
+  	    <label>
+  	      <input type="radio" name="velgradio" value="hist"/>
+  	      <span class="label-font">Historiske data</span>
+  	    </label>
+  	  </div>
+  	  <div id="velghistoriske" class="row">
+  			<div class="col-sm-5">
+  				<span class="label-font">År</span>
+  				<input id="year" type="number" class="form-control" value="2017" min="1900" max="2030"/>
+  			</div>
+  			<div class="col-sm-5">
+  				<span class="label-font">Ukenummer</span>
+  				<input id="week" type="number" class="form-control" value="10" min="0" max="52"/>
+  			</div>
+  	  </div>
+  	</div>
+  </div>
+  
+  <div id="km" class="form-group shiny-input-checkboxgroup shiny-input-container">
+  	  <div class="row">
+  	  	<div class="col-sm-12">
+  	  		<span class="label-font">Avgrens dataområde</span>
+  	  	</div>
+  	  </div>
+  	  <div class="row">
+  	  	<div class="col-sm-5">
+          <input id="km_om" type="number" class="form-control" value="200" min="1" max="2000"/>
+  	  	</div>
+  	  	<div class="col-sm-7">
+  	  		<span class="label-font">km radius fra valgt lokalitet</span>
+  	  	</div>
+  	  </div>  
+  </div>
+  
+  <div id="visvar" class="form-group shiny-input-checkboxgroup shiny-input-container">
+  	<label class="control-label" >Vis</label>
+  	<div class="shiny-options-group">
+  	  <div class="checkbox">
+  	    <label>
+  	      <input type="checkbox" name="visvar" value="begr"/>
+  	      <span class="label-font">Lokaliteter</span>
+  	    </label>
+  	  </div>
+  	</div>
+  </div>
+      				
+  <div>
+    <button type="submit" class="btn btn-secondary btn-lg">
+      Oppdater kartet
+    </button>
+  </div>

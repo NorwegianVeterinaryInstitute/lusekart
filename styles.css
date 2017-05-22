@@ -1,0 +1,127 @@
+input[type="number"] {
+  max-width: 80%;
+}
+
+div.outer {
+  position: fixed;
+  top: 80px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* Customize fonts */
+body, label, input, button, select { 
+  font-family: 'Helvetica Neue', Helvetica;
+  font-weight: 200;
+}
+
+h1, h2, h3, h4 { font-weight: 500; }
+
+#controls {
+  /* Appearance */
+  background-color: white;
+  padding: 0 20px 20px 20px;
+  cursor: move;
+  /* Fade out while not hovering */
+  opacity: 0.65;
+  zoom: 0.9;
+  transition: opacity 500ms 1s;
+}
+#controls:hover {
+  /* Fade in while hovering */
+  opacity: 0.95;
+  transition-delay: 0;
+}
+
+/* Position and style citation */
+#cite {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  font-size: 12px;
+}
+
+/* If not using map tiles, show a white background */
+.leaflet-container {
+  background-color: white !important;
+}
+
+.container-fluid {
+  padding-right: 0px;
+  padding-left: 0px;
+}
+
+.title-font {
+  font-family: "futura-pt", serif;
+  font-weight: 500;
+}
+
+.label-font {
+  font-family: "source-serif-pro", serif;
+  font-size: 1.5rem;
+}
+
+.btn-secondary {
+  background-color: #003344;
+  color: #ffffff;
+  font-family: "futura-pt", serif;
+  font-size: 1.75rem;
+}
+
+.btn.btn-secondary {
+   border-radius: 0px;
+}
+
+.btn-secondary:focus, .btn-secondary:hover {
+    background-color: #6BB984;
+    color: #ffffff;
+}
+
+.bg-dark {
+    background-color: #003344;
+    color: #ffffff;
+}
+
+.logo {
+  max-height: 50px;
+  max-width: 280px;  
+}
+
+.bg-dark a {
+  color: #ffffff;
+}
+
+.nav {
+  font-family: "futura-pt";
+  font-weight: 500;
+}
+
+.nav .bg, .bg1, .bg2 {
+  display: inline-block;
+  vertical-align: middle;
+  padding-bottom: 10px;
+}
+
+.bg {
+  width: 20%;
+  padding-left: 10px;
+}
+
+
+.bg1 {
+  width: 69%;
+}
+
+.bg2 {
+  width: 10%;
+  text-align: right;
+  padding-right: 10px;
+}
+
+.bg a, .bg1 a, .bg2 a {
+  color: white;
+  font-size: 1.5rem;
+}
